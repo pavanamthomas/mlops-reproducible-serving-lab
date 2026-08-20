@@ -8,11 +8,9 @@ This repository is a small serving laboratory. A synthetic logistic classifier i
 
 Author: Dr. Pavanam Thomas ([GitHub](https://github.com/pavanamthomas), thomaspavanam@gmail.com).
 
-**Problem → formalization → assumptions → computation → validation → interpretation → limitations.**
+The invariant is \(\hat g_{\text{serve}}(x)=\hat g_{\text{train}}(x)\) for schema-valid \(x\). HTTP 200 is not that check.
 
-## Recruiter 90-Second Audit
-
-Inspect, in this order:
+## Serving invariant
 
 1. [`FLAGSHIP_TRAINING_SERVING_SKEW.md`](FLAGSHIP_TRAINING_SERVING_SKEW.md) — the API “works”; the number is wrong; a parity test catches it.
 2. [`docs/failures_and_corrections.md`](docs/failures_and_corrections.md) — failures the tests are required to keep visible.
@@ -31,7 +29,7 @@ python scripts/run_all.py
 
 Python 3.11 or newer. There is no observational dataset. `mlruns/` is gitignored. Tests train a tiny model in a session fixture; no stale pickle is committed.
 
-## Technical Decisions I Can Defend
+## Contract and artefacts
 
 **Estimand.** Serving correctness is \(\hat g_{\text{serve}}(x)=\hat g_{\text{train}}(x)\) for schema-valid \(x\). \(\hat g_{\text{train}}\) is one fitted sklearn `Pipeline` (StandardScaler + OneHotEncoder with `handle_unknown='error'` + logistic regression). Preprocessing is not a separate script.
 
@@ -45,7 +43,7 @@ Python 3.11 or newer. There is no observational dataset. `mlruns/` is gitignored
 
 **Architecture bound.** One process, one artifact path, a Dockerfile for a local image. No Kubernetes, no cloud lock-in layer, no invented SLOs. Docker is not built on GitHub Actions; pytest already checks the API and the parity estimand (`docs/api_contract.md`).
 
-## Deliberate Failure Cases
+## Designed skew
 
 - Pooled or batch `StandardScaler` in serving, trained classifier unchanged.
 - Age/income values swapped under valid names (CSV mapping).
@@ -58,7 +56,7 @@ Python 3.11 or newer. There is no observational dataset. `mlruns/` is gitignored
 
 Details: `docs/failures_and_corrections.md`.
 
-## Independent Validation
+## Parity tests
 
 Tests check properties:
 
@@ -75,7 +73,7 @@ Tests check properties:
 
 `scripts/run_all.py` regenerates figures and `outputs/tables/run_summary.csv`. Those files are not the source of truth.
 
-## Reproduce Everything
+## Reproducibility
 
 ```bash
 python -m pip install -e .
@@ -113,7 +111,7 @@ mlops-reproducible-serving-lab/
 └── .github/workflows/ci.yml
 ```
 
-## Limitations and Non-Claims
+## Known limitations
 
 - Simulated rows are not credit data. Feature names are labels of columns.
 - Logistic beating the dummy on this DGP is expected and is not a model-selection result for other tasks.
@@ -126,20 +124,11 @@ mlops-reproducible-serving-lab/
 
 Related laboratories: [statistical-reasoning-validation](https://github.com/pavanamthomas/statistical-reasoning-validation), [econometrics-causal-inference-lab](https://github.com/pavanamthomas/econometrics-causal-inference-lab).
 
-## Interview Questions This Repository Naturally Raises
+## Open questions
 
-1. If `/health` is 200 and `/predict` is 200, what estimand has been checked, and what has not?
-2. Why fit `StandardScaler` inside a `Pipeline` rather than on a notebook cell and again in the handler?
-3. When would `OneHotEncoder(handle_unknown='ignore')` hide schema drift that this laboratory wants to fail loudly?
-4. How is training-serving skew different from covariate shift? Can PSI on raw features miss a feature swap?
-5. What does a KS p-value assume, and why is it not an alerting policy?
-6. Delayed labels: which accuracy is identified, and which is not?
-7. What must be retained besides coefficients for \(\hat g_{\text{serve}}=\hat g_{\text{train}}\) to be reconstructable?
-8. Why is `schema_version` equality a weaker statement than preprocessor equality?
-9. What would a canary add that `select_previous_artifact` does not, and what false sense of safety could a canary create?
-10. How would you test serving correctness if the model consumed embeddings from another team’s service?
-11. Why log to an MLflow file store without starting the UI in CI?
-12. Under what change to the DGP would beating `DummyClassifier` stop being expected, and what would that do to the interpretation of val accuracy?
+Canary traffic and shadow-mode comparison are not implemented; rollback is a
+registry lookup. Calibration under shift is not estimated. The Docker image is
+not built on GitHub Actions. See `ROADMAP.md`.
 
 ## Citation
 
