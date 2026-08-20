@@ -1,0 +1,12 @@
+seed: 2026
+schema_version: "1.0"
+model_version: "1.0.0"
+n_samples: 800
+test_size: 0.25
+model:
+  type: logistic
+  C: 1.0
+  max_iter: 200
+mlflow:
+  tracking_uri: file:./mlruns
+  experiment_name: mlserv-synthetic

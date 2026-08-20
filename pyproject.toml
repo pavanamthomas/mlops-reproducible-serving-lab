@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mlserv"
+version = "0.1.0"
+description = "A small laboratory for reproducible training, versioned artifacts, FastAPI serving, and training-serving skew."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Dr. Pavanam Thomas", email = "thomaspavanam@gmail.com" },
+]
+keywords = [
+    "mlops",
+    "reproducibility",
+    "model serving",
+    "training-serving skew",
+    "drift",
+    "model versioning",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.1",
+    "scikit-learn>=1.3",
+    "scipy>=1.11",
+    "matplotlib>=3.8",
+    "fastapi>=0.110",
+    "pydantic>=2.0",
+    "uvicorn>=0.27",
+    "mlflow>=2.10",
+    "pyyaml>=6.0",
+    "joblib>=1.3",
+    "pytest>=7.4",
+    "httpx>=0.26",
+]
+
+[project.urls]
+Homepage = "https://github.com/pavanamthomas/mlops-reproducible-serving-lab"
+Repository = "https://github.com/pavanamthomas/mlops-reproducible-serving-lab"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"
