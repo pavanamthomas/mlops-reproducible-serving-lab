@@ -124,7 +124,7 @@ mlops-reproducible-serving-lab/
 
 Related laboratories: [statistical-reasoning-validation](https://github.com/pavanamthomas/statistical-reasoning-validation), [econometrics-causal-inference-lab](https://github.com/pavanamthomas/econometrics-causal-inference-lab).
 
-## Open questions
+## Remaining serving-parity bounds
 
 Canary traffic and shadow-mode comparison are not implemented; rollback is a
 registry lookup. Calibration under shift is not estimated. The Docker image is
