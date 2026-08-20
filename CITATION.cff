@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: If you use this repository, please cite it as below.
+title: mlops-reproducible-serving-lab
+authors:
+  - family-names: Thomas
+    given-names: Pavanam
+    email: thomaspavanam@gmail.com
+license: MIT
+repository-code: https://github.com/pavanamthomas/mlops-reproducible-serving-lab
+url: https://github.com/pavanamthomas/mlops-reproducible-serving-lab
+abstract: >
+  A small laboratory for making a trained classifier reproducible, testable,
+  versioned, locally serveable, monitorable, and safely replaceable. The
+  flagship failure is training-serving skew: an API can return HTTP 200
+  while the serving transform is not the fitted training Pipeline.
+keywords:
+  - mlops
+  - reproducibility
+  - model serving
+  - training-serving skew
+  - data drift
+  - concept drift
+  - model versioning
+  - FastAPI
+  - MLflow
+version: 0.1.0
+date-released: "2026-08-20"
