@@ -1,26 +1,8 @@
-"""Training-serving skew: the API can respond while served g-hat is not the training g-hat.
+"""Deliberate wrong transforms that still return a probability.
 
-Problem: HTTP 200 and a valid JSON body do not identify equality of the
-served prediction and the prediction of the fitted Pipeline.
-Assumptions: the correct serving path calls ``pipeline.predict_proba``
-on a DataFrame with training column names; skewed paths either refit a
-scaler on pooled or batch statistics, or write feature values into the
-wrong named columns.
-Why this method: the laboratory constructs the wrong transform
-deliberately and measures max absolute probability difference against
-the fitted Pipeline.
-Alternative: embedding a hash of the preprocessor statistics in the
-response. Useful, not implemented; the parity test is the check used
-here.
-What can go wrong: a tolerance so loose that a real swap is missed; a
-tolerance so tight that float noise on identical paths fails.
-Independent check: ``tests/test_parity.py`` (identical path) and
-``tests/test_skew.py`` (detector fires on the wrong path).
-Can conclude: on this batch, the wrong transform moved probabilities by
-at least the reported amount.
-Cannot conclude: that every production bug looks like pooled scaling.
+HTTP 200 does not identify equality with pipeline.predict_proba.
+Swapped columns and pooled scalers are the constructed cases.
 """
-
 from __future__ import annotations
 
 from dataclasses import dataclass

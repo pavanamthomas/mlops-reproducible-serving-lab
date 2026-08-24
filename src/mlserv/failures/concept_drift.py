@@ -1,25 +1,8 @@
-"""Concept drift with delayed labels.
+"""Label mechanism change with a delayed-label mask.
 
-Problem: P(Y | X) can change while P(X) looks stable. Labels used to
-score the model often arrive later than predictions.
-Assumptions: the laboratory changes the credit-score slope in the DGP;
-until a boolean mask says the label has arrived, accuracy is not
-identified from the delayed sample.
-Why this method: a known change in the DGP plus an explicit delay mask
-makes the identification statement sharp.
-Alternative: sequential detectors (ADWIN, Page-Hinkley). Not
-implemented; they would require a different false-positive analysis.
-What can go wrong: reading a stable prediction histogram as evidence
-that the concept is unchanged; scoring delayed accuracy on the full
-window including missing labels filled with zeros.
-Independent check: after the slope sign flips, accuracy on arrived
-labels falls relative to the original val split on this DGP.
-Can conclude: under this DGP change and this delay, these scores were
-observed.
-Cannot conclude: a monitoring product, or that prediction-distribution
-shift is a sufficient proxy for concept drift.
+P(Y|X) can move while P(X) looks stable. Accuracy is unidentified
+until the label has arrived.
 """
-
 from __future__ import annotations
 
 from dataclasses import dataclass

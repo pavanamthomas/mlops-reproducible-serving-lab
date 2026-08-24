@@ -1,27 +1,8 @@
-"""Synthetic binary classification data-generating process.
+"""iid logistic DGP used by training, serving, and drift checks.
 
-Problem: training, serving, and drift experiments need a known label
-mechanism so that a metric can be compared to a truth, not to an
-unobserved population.
-Assumptions: observations are iid given the feature draw; labels are
-Bernoulli with a logistic mean that is linear in age, log income, credit
-score, and segment indicators. Default seed is 2026.
-Why this method: a logistic DGP matches the model class used in
-training, so a skill gap versus a dummy classifier, when it appears, is
-not a mystery about misspecification.
-Alternative: a nonlinear or dependent DGP. That would be a different
-laboratory question (misspecification), not the serving-contract
-question.
-What can go wrong: treating simulated rows as credit-bureau data;
-reading coefficients as causal effects of income or age.
-Independent check: generated columns pass ``mlserv.schema``; extreme
-feature rows have label probabilities ordered as the logit implies.
-Can conclude: statements about estimators and serving transforms under
-this DGP.
-Cannot conclude: anything about a real lending, hiring, or clinical
-population.
+Labels are Bernoulli given age, log income, credit score, and segment.
+Default seed 2026.
 """
-
 from __future__ import annotations
 
 from dataclasses import dataclass

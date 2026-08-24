@@ -1,23 +1,7 @@
-"""Simple monitoring statistics for the synthetic serving laboratory.
+"""Batch missingness, location, and prediction-histogram summaries.
 
-Problem: after a model is served, one still needs numbers on missingness,
-feature location, distribution change, prediction histograms, and
-delayed labelled performance.
-Assumptions: windows are batches, not streaming; tests are unadjusted;
-labels may be missing. These are descriptive statistics, not a
-monitoring product.
-Why this method: each quantity is one function that a test can check
-on a known shift.
-Alternative: Prometheus + Grafana + a drift service. Out of scope; see
-``docs/monitoring_limits.md``.
-What can go wrong: alerting on KS p-values as if they were calibrated
-Type I errors under dependence; treating delayed accuracy as online
-skill.
-Independent check: ``tests/test_monitoring.py``.
-Can conclude: these summaries of these two batches.
-Cannot conclude: operational readiness or a false-alarm warranty.
+Descriptive statistics on windows, not a monitoring product.
 """
-
 from __future__ import annotations
 
 from dataclasses import dataclass

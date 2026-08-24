@@ -1,25 +1,8 @@
-"""Feature schema for the synthetic serving laboratory.
+"""Feature names, order, types, and admissible ranges.
 
-Problem: a serving contract must name the features, their order, their
-types, and their admissible ranges so that a record can be rejected
-before it is passed to a fitted Pipeline.
-Assumptions: the DGP in ``mlserv.data`` draws inside these bounds; the
-API Pydantic models encode the same bounds.
-Why this method: a single Python source of truth is cheaper to check
-than a separate training schema and a separate OpenAPI schema that can
-diverge.
-Alternative: JSON Schema or a protobuf contract. Either would work; they
-add tooling without changing the estimand.
-What can go wrong: the API range and this module drift apart; an unseen
-category is silently one-hot encoded to zeros.
-Independent check: ``tests/test_schemas.py`` compares Pydantic bounds to
-these constants; the preprocessor uses ``handle_unknown='error'``.
-Can conclude: a record that fails this schema is not a valid input to
-the laboratory model.
-Cannot conclude: that a record inside the bounds is drawn from any real
-applicant population.
+The API Pydantic models must match this module. Drift between the two
+is a contract bug, not a model bug.
 """
-
 from __future__ import annotations
 
 from dataclasses import dataclass

@@ -1,19 +1,7 @@
-"""Serving helpers that call the fitted Pipeline on an ordered frame.
+"""Call the fitted Pipeline on a DataFrame in FEATURE_ORDER.
 
-Problem: HTTP handlers must not reimplement preprocessing. The estimand
-is equality of served g-hat and training g-hat for the same record x.
-Assumptions: the loaded object is the fitted sklearn Pipeline; columns
-are reindexed to ``FEATURE_ORDER`` before ``predict``.
-Why this method: one function used by the API and by the parity test.
-Alternative: a handwritten numpy transform in the handler. That is the
-flagship failure mode.
-What can go wrong: converting to a numpy array in the wrong column
-order; fitting a new scaler on the request batch.
-Independent check: ``tests/test_parity.py``.
-Can conclude: this helper uses the fitted Pipeline as-is.
-Cannot conclude: that every future handler will call this helper.
+Handlers must not rebuild preprocessing. Parity tests use this helper.
 """
-
 from __future__ import annotations
 
 import pandas as pd

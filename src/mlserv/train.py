@@ -1,26 +1,8 @@
-"""Train a logistic Pipeline on the synthetic DGP and record metadata.
+"""Fit the sklearn Pipeline and write the versioned artifact.
 
-Problem: a trained model is not reproducible unless the seed, library
-versions, feature order, schema version, split, and the fitted Pipeline
-are stored together.
-Assumptions: iid draws from ``mlserv.data``; stratified split with the
-config seed; preprocessing is inside the Pipeline; MLflow uses a local
-file store when logging is enabled.
-Why this method: one function returns the fitted object, the dummy
-baseline scores, and the artifact metadata that serving will read.
-Alternative: a notebook that prints scores without writing an artifact.
-That cannot be served or rolled back.
-What can go wrong: logging to MLflow is treated as evidence that the
-UI was inspected; claiming the logistic model is better than the dummy
-outside this DGP; committing ``mlruns/``.
-Independent check: ``tests/test_train.py`` reloads the artifact;
-``scripts/run_all.py`` prints val scores next to the dummy.
-Can conclude: under this DGP and seed, these val scores were observed
-and this Pipeline was serialised.
-Cannot conclude: production skill, causal effects, or that MLflow was
-running as a server. CI does not start the MLflow UI.
+Seed, feature order, schema version, and the fitted object are stored
+together. Local MLflow logging is optional; CI does not start the UI.
 """
-
 from __future__ import annotations
 
 import sys

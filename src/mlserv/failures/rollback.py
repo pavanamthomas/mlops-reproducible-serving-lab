@@ -1,23 +1,7 @@
-"""Select the previous artifact in a linear local registry.
+"""Previous artifact in a linear local registry.
 
-Problem: replacing a bad model requires naming the artifact to restore.
-Assumptions: records are totally ordered by ``created_at`` then
-``artifact_id``; there is no canary, no traffic split, and no
-distributed lock.
-Why this method: a previous-id lookup is the smallest rollback that can
-be unit tested. A markdown note in ``docs/rollback.md`` states what this
-does not do.
-Alternative: MLflow model stages (Staging/Production). Not used; they
-imply a process this laboratory does not run.
-What can go wrong: rolling back to an artifact whose schema_version no
-longer matches the API; treating this function as an incident manager.
-Independent check: a three-record registry returns the middle id when
-the current id is the latest.
-Can conclude: which recorded id precedes the current one in this list.
-Cannot conclude: that restoring that file will restore production
-behaviour.
+No canary, no traffic split. Schema mismatch still has to be checked.
 """
-
 from __future__ import annotations
 
 from dataclasses import dataclass

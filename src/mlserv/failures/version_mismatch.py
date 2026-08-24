@@ -1,24 +1,7 @@
-"""Reject serving when model_version or schema_version do not match.
+"""Hard-fail when model_version or schema_version disagree.
 
-Problem: an API process can load yesterday's Pipeline while today's
-request contract, or the reverse, and still return HTTP 200 if versions
-are not checked.
-Assumptions: versions are opaque strings recorded on the artifact;
-mismatch is a hard error, not a warning.
-Why this method: equality of two recorded strings is the smallest check
-that makes rollback and replacement explicit.
-Alternative: embedding a content hash of the Pydantic model. Not
-implemented.
-What can go wrong: a new schema that happens to use the same version
-string; a model_version bump with no schema change that is still
-incompatible because preprocessing changed.
-Independent check: ``tests/test_failures.py`` expects ValueError on a
-swapped pair.
-Can conclude: these two version strings are not equal.
-Cannot conclude: semantic compatibility of two artifacts that share a
-schema_version.
+An API can still return HTTP 200 if versions are not checked.
 """
-
 from __future__ import annotations
 
 from dataclasses import dataclass

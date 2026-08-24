@@ -1,24 +1,7 @@
-"""Local artifact bundle: fitted Pipeline plus version metadata.
+"""Joblib Pipeline plus JSON metadata for local rollback checks.
 
-Problem: a serving process must load the same object that training
-fitted, together with the seed, library versions, feature order, and
-schema/model versions that define the contract.
-Assumptions: joblib can serialise the sklearn Pipeline; metadata is JSON
-with string keys; this is a filesystem registry, not a model store with
-ACLs.
-Why this method: one file for the Pipeline and one JSON sidecar (also
-embedded in the joblib dict) is enough to test rollback and version
-mismatch without introducing a database.
-Alternative: MLflow model registry, S3 plus a pointer table. Those are
-valid; they are out of scope for this laboratory.
-What can go wrong: loading a pickle from an untrusted path; serving an
-artifact whose schema_version does not match the API models.
-Independent check: train, dump, load, compare predict_proba.
-Can conclude: the bytes on disk reconstruct the fitted object in this
-environment.
-Cannot conclude: pickle compatibility across sklearn major versions.
+Not a model registry. Train, dump, load, and compare predict_proba.
 """
-
 from __future__ import annotations
 
 import json

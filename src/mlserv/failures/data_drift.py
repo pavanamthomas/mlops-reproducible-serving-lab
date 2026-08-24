@@ -1,25 +1,7 @@
-"""Covariate shift checks: PSI and Kolmogorov–Smirnov on features.
+"""PSI and Kolmogorov–Smirnov on features under a known shift.
 
-Problem: the serving population of X may differ from the training
-population of X even when the label mechanism is unchanged.
-Assumptions: reference and current samples are iid within each window;
-bins for PSI are empirical quantiles of the reference sample; a small
-epsilon is used so empty bins do not send the log to -inf.
-Why this method: PSI and KS are common, cheap, and easy to misread as a
-monitoring platform. The laboratory implements them so that limit can
-be stated next to the number.
-Alternative: MMD, classifier two-sample tests, or density ratios. Not
-implemented.
-What can go wrong: a 0.1/0.25 PSI rule of thumb treated as a theorem;
-multiple features unadjusted; binning artefacts.
-Independent check: a mean-shifted copy of a feature raises KS and PSI
-relative to an identical redraw.
-Can conclude: these two samples differ on this feature according to PSI
-or KS.
-Cannot conclude: that the model should be retrained, that the shift is
-malicious, or that labels have changed.
+Cheap two-sample numbers, not a retraining policy.
 """
-
 from __future__ import annotations
 
 from dataclasses import dataclass

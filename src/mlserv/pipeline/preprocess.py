@@ -1,27 +1,8 @@
-"""sklearn preprocessing joined to the classifier.
+"""StandardScaler and OneHotEncoder inside the sklearn Pipeline.
 
-Problem: a scaler or encoder fitted separately from the model is a
-common way for serving code to silently use different statistics than
-training.
-Assumptions: training rows are a pandas DataFrame with the schema
-feature names; the categorical encoder must reject unseen segments
-rather than map them to a zero vector.
-Why this method: ``sklearn.pipeline.Pipeline`` serialises one object
-that serving can load. Joint fit is the contract.
-Alternative: a feature store with explicit statistics snapshots. That
-is a larger system; the failure mode is the same if the snapshot is not
-the one used at train time.
-What can go wrong: serving applies ``fit_transform`` on a production
-batch; column order is taken from a CSV header; ``handle_unknown='ignore'``
-hides a new category.
-Independent check: ``tests/test_preprocess.py`` and the training-serving
-parity test.
-Can conclude: the fitted Pipeline is the unique intended transform for
-this laboratory model.
-Cannot conclude: that StandardScaler is the right transform for a
-different DGP.
+Unseen segments are rejected. Serving a separately fitted scaler is the
+training-serving skew the laboratory constructs on purpose.
 """
-
 from __future__ import annotations
 
 from sklearn.compose import ColumnTransformer

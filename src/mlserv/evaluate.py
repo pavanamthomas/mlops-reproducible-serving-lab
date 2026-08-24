@@ -1,23 +1,7 @@
-"""Hold-out evaluation against a dummy baseline.
+"""Hold-out scores against a dummy classifier on the same split.
 
-Problem: a trained model needs numbers on a split that was not used to
-fit the Pipeline, and those numbers need a baseline so they are not
-read as an absolute claim of skill.
-Assumptions: labels are binary in {0, 1}; ``predict_proba`` is defined;
-the val split is iid from the same DGP as training unless a drift
-experiment says otherwise.
-Why this method: accuracy, log loss, ROC AUC, and Brier score are
-standard proper or ranking scores for a probabilistic classifier.
-Alternative: expected calibration error, decision-curve analysis. Not
-implemented; they would answer a different question.
-What can go wrong: quoting val accuracy as a production SLO; claiming
-the logistic model is better than the dummy outside this DGP.
-Independent check: DummyClassifier is fitted on the same y_train;
-tests check that both metric dicts are populated.
-Can conclude: on this synthetic val split, these scores were observed.
-Cannot conclude: generalization to a shifted or real population.
+Accuracy, log loss, ROC-AUC, and Brier. Not a claim of production skill.
 """
-
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass

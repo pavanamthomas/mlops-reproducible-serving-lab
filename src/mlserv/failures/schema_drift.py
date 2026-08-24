@@ -1,21 +1,7 @@
-"""Schema drift: missing fields, new fields, and type changes.
+"""Missing, extra, or retyped columns versus FEATURE_ORDER.
 
-Problem: the production record shape can change while the model artifact
-still expects schema_version 1.0.
-Assumptions: the laboratory schema is the tuple ``FEATURE_ORDER``;
-unexpected columns are violations, not extras to drop.
-Why this method: compare column sets and dtypes before calling the
-Pipeline, so a 422/ValueError happens instead of a silent column drop.
-Alternative: a schema registry (Protobuf, Avro). Same estimand, more
-infrastructure.
-What can go wrong: ``remainder='drop'`` in ColumnTransformer hides new
-fields if they never reach this check.
-Independent check: ``tests/test_failures.py`` for missing, extra, and
-bad category.
-Can conclude: this record does not match schema 1.0.
-Cannot conclude: how the upstream producer should version its events.
+Fail before the Pipeline rather than dropping fields silently.
 """
-
 from __future__ import annotations
 
 from dataclasses import dataclass
