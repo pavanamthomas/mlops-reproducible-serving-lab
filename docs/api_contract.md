@@ -34,6 +34,10 @@ docker run --rm -p 8000:8000 mlserv-lab
 
 `.dockerignore` keeps tests, docs, and `mlruns/` out of the build context.
 
-## Why GitHub Actions does not build the image
+## What CI actually checks on the image
 
-A docker build on `ubuntu-latest` without buildx cache is slow, needs Docker layer plumbing, and does not test the estimand \(\hat g_{\text{serve}}=\hat g_{\text{train}}\). That estimand is checked by pytest (`tests/test_parity.py`, `tests/test_api.py`). The workflow therefore runs pytest, `scripts/train.py --n-samples 120 --skip-mlflow`, and `scripts/run_all.py`. It does not run `docker build`.
+GitHub Actions builds the Docker image and runs `scripts/check_container_parity.py` against a live container. That script waits until `/health` reports `model_loaded`, then compares one schema-valid `/predict-proba` response with the offline fitted Pipeline, including schema and model versions.
+
+The first end-to-end attempt failed with `ConnectionResetError` while the process was still binding the port. That is a readiness failure, not a prediction-parity failure. The probe retries bounded connection resets; numerical comparison happens only after readiness. The regression is `tests/test_container_probe.py`.
+
+HTTP 200 is still not the estimand. A swapped-column request can return 200 with the wrong probability (`tests/test_skew.py`). The container check compares the served number with `pipeline.predict_proba` on the same fixture.

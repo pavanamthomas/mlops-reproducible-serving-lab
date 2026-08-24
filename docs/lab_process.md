@@ -5,7 +5,7 @@ Work is recorded in this order:
 1. A failure, limitation, or serving-contract question is written down (GitHub issue and, when it is part of the teaching design, `docs/failures_and_corrections.md`).
 2. If the claim is numerical, a test is added that would fail if the claim were reversed.
 3. Code or documentation changes in a commit that states the reason, not the file list.
-4. CI on `main` must pass. Passing CI means pytest, a training smoke, and `scripts/run_all.py` still run. It is not evidence about a production service. The MLflow UI is not started. Docker is not built on GitHub Actions.
+4. CI on `main` must pass. Passing CI means pytest, a training smoke, `scripts/run_all.py`, a Docker image build, and a container prediction-parity check against the offline fitted Pipeline. That is still not evidence about a production service. The MLflow UI is not started.
 
 The public queue is GitHub Issues. The bound on that queue is `ROADMAP.md`.
 
