@@ -38,13 +38,22 @@ def _json_request(url: str, *, payload: dict[str, object] | None = None) -> dict
 
 
 def wait_for_health(base_url: str, *, attempts: int = 30, delay: float = 1.0) -> dict[str, object]:
+    """Poll until the API is ready, treating startup socket resets as transient."""
     last_error: Exception | None = None
     for _ in range(attempts):
         try:
             health = _json_request(f"{base_url.rstrip('/')}/health")
             if health.get("status") == "ok" and health.get("model_loaded") is True:
                 return health
-        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as exc:
+        except (
+            urllib.error.URLError,
+            TimeoutError,
+            ConnectionError,
+            json.JSONDecodeError,
+        ) as exc:
+            # A container can accept a TCP connection before uvicorn has fully
+            # initialised the application. A reset at that boundary is a retry
+            # condition, not evidence that prediction parity failed.
             last_error = exc
         time.sleep(delay)
     raise RuntimeError(f"container did not become healthy: {last_error}")
