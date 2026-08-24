@@ -31,10 +31,10 @@ jobs:
       - name: Run tests
         run: python -m pytest
 
-      - name: Training smoke
+      - name: Training smoke and offline parity artifact
         env:
           MPLBACKEND: Agg
-        run: python scripts/train.py --n-samples 120 --skip-mlflow
+        run: python scripts/train.py --n-samples 400 --skip-mlflow --artifact-dir ci_models
 
       - name: Reproduce laboratory scripts
         env:
@@ -42,6 +42,16 @@ jobs:
           MLFLOW_ALLOW_FILE_STORE: "true"
         run: python scripts/run_all.py
 
-      # Docker is not built here. A GHA docker build without buildx cache
-      # is slow and is not a check of training-serving parity (that check is
-      # pytest). Local image instructions: docs/api_contract.md.
+      - name: Build serving image
+        run: docker build -t mlserv-parity-ci .
+
+      - name: Check container prediction parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm -d --name mlserv-parity-ci -p 8000:8000 mlserv-parity-ci
+          trap 'docker logs mlserv-parity-ci || true; docker stop mlserv-parity-ci >/dev/null 2>&1 || true' EXIT
+          python scripts/check_container_parity.py \
+            --artifact ci_models/bundle.joblib \
+            --base-url http://127.0.0.1:8000 \
+            --tolerance 1e-10
