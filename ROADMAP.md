@@ -1,6 +1,6 @@
 # Roadmap
 
-Current as of August 2026.
+Serving and monitoring limits remaining after Docker prediction-parity landed in CI (August 2026).
 
 ## In scope now
 

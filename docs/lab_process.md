@@ -1,12 +1,7 @@
-# Laboratory process
+# How this lab records work
 
-Work is recorded in this order:
+Serving claims here are claims that HTTP output equals the fitted training `Pipeline` on the same schema-valid input. Write the skew (column swap, dropped step, stale artifact) before changing the API.
 
-1. A failure, limitation, or serving-contract question is written down (GitHub issue and, when it is part of the teaching design, `docs/failures_and_corrections.md`).
-2. If the claim is numerical, a test is added that would fail if the claim were reversed.
-3. Code or documentation changes in a commit that states the reason, not the file list.
-4. CI on `main` must pass. Passing CI means pytest, a training smoke, `scripts/run_all.py`, a Docker image build, and a container prediction-parity check against the offline fitted Pipeline. That is still not evidence about a production service. The MLflow UI is not started.
+If the claim is numerical, add a test that would fail if health were treated as parity. CI on `main` trains an artifact, builds the Docker image, waits for model readiness (retrying `ConnectionResetError` on first probe), and compares `/predict-proba` with the offline Pipeline. Passing CI is not a production SLO. The MLflow UI is not started.
 
-The public queue is GitHub Issues. The bound on that queue is `ROADMAP.md`.
-
-Do not treat a green badge as a correction. A correction is a change in the served transform, the version check, or the interpretation of a drift statistic, locked by a test or by an explicit limitation statement.
+Issues are the public queue. `ROADMAP.md` is the bound. A green badge is not Kubernetes.

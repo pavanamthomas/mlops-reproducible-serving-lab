@@ -1,14 +1,14 @@
 ---
-name: Limitation
-about: Record a bound on what this laboratory identifies or computes
-title: "[limitation] "
+name: Serving bound
+about: A production, Kubernetes, or SLO claim this lab does not make
+title: "[bound] "
 labels: ["limitation"]
 ---
 
-## What is limited
+## Serving claim that is out of reach
 
-## Why this is a bound rather than a bug
+## Why HTTP 200 and `/health` are not enough
 
-## What would be required to go further
+## Skew that already returns 200 with the wrong probability
 
-## Related tests or notes
+## What Docker parity in CI does not license

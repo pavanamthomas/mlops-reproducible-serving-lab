@@ -1,12 +1,12 @@
 ---
-name: Validation gap
-about: A property that should be checked, or a check that is too weak
-title: "[validation] "
+name: Parity gap
+about: A health or schema check that still misses training-serving skew
+title: "[check] "
 labels: ["validation"]
 ---
 
 ## Claim that is insufficiently checked
 
-## DGP or identity that would expose the gap
+## Column swap, dropped step, or stale artifact that would expose the gap
 
-## Proposed check
+## Proposed HTTP-versus-Pipeline test

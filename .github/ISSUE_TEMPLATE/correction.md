@@ -1,14 +1,14 @@
 ---
-name: Correction
-about: A documented failure and the correction that follows from it
+name: Skew correction
+about: An API that worked and still served the wrong number
 title: "[correction] "
 labels: ["correction"]
 ---
 
-## What failed
+## Schema-valid request and the probability it returned
 
-## Diagnostic or counterexample
+## Offline Pipeline value on the same input
 
-## Correction (estimator, specification, or interpretation)
+## Correction of transform, artifact, or contract
 
-## What remains unknown
+## What remains unknown under production traffic

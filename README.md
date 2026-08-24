@@ -6,7 +6,7 @@ How do we make a trained ML model reproducible, testable, versioned, servable, m
 
 A synthetic logistic classifier is trained inside an sklearn `Pipeline`, compared with a dummy baseline, stored with version metadata, served through FastAPI, and then broken on purpose. The flagship failure is training-serving skew: an API can return HTTP 200 while its numerical probability is not the probability from the fitted training pipeline.
 
-Author: Dr. Pavanam Thomas ([GitHub](https://github.com/pavanamthomas), thomaspavanam@gmail.com).
+Dr. Pavanam Thomas · [pavanamthomas](https://github.com/pavanamthomas) · thomaspavanam@gmail.com
 
 The invariant is simple: for the same schema-valid input, serving must reproduce the fitted pipeline's prediction. Health, schema validation, and prediction parity are separate checks.
 
@@ -134,7 +134,7 @@ mlops-reproducible-serving-lab/
 └── .github/workflows/ci.yml
 ```
 
-Related laboratories: [computational-ml-stem-problem-forge](https://github.com/pavanamthomas/computational-ml-stem-problem-forge), [machine-learning-model-selection-lab](https://github.com/pavanamthomas/machine-learning-model-selection-lab), and [statistical-reasoning-validation](https://github.com/pavanamthomas/statistical-reasoning-validation).
+The classifier here is a serving fixture, not a model-selection result. For validation-design failures see [machine-learning-model-selection-lab](https://github.com/pavanamthomas/machine-learning-model-selection-lab).
 
 ## Citation
 
