@@ -1,7 +1,6 @@
 # Data policy
 
-This repository is an ML serving laboratory. It does not ship observational
-microdata, credit files, or proprietary logs.
+No credit files or production logs. Rows come from the logistic DGP in `src/mlserv/data.py` so serving skew can be measured against a known Pipeline.
 
 ## What is used
 
@@ -23,10 +22,7 @@ lending book, a production model, or a published empirical study.
 
 ## Regeneration
 
-Figures and tables under `outputs/` are disposable. They are written by
-`python scripts/run_all.py` and are ignored by git except for `.gitkeep`
-placeholders. `mlruns/` and trained `models/*.joblib` are gitignored.
-Tests train a tiny model in a session-scoped fixture.
+Parity dumps under `outputs/` are session artifacts from `scripts/run_all.py`, not a served production log.
 
 ## Third-party code
 
