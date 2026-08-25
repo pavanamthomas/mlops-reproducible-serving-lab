@@ -53,6 +53,6 @@ Repository = "https://github.com/pavanamthomas/mlops-reproducible-serving-lab"
 where = ["src"]
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
+pythonpath = ["src", "."]
 testpaths = ["tests"]
 addopts = "-q"

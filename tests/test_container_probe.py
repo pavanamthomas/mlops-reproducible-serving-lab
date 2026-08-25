@@ -2,7 +2,15 @@
 
 from __future__ import annotations
 
-from scripts import check_container_parity as probe
+import importlib.util
+from pathlib import Path
+
+_PROBE = Path(__file__).resolve().parents[1] / "scripts" / "check_container_parity.py"
+_SPEC = importlib.util.spec_from_file_location("mlserv_check_container_parity", _PROBE)
+if _SPEC is None or _SPEC.loader is None:
+    raise ImportError(f"cannot load container probe from {_PROBE}")
+probe = importlib.util.module_from_spec(_SPEC)
+_SPEC.loader.exec_module(probe)
 
 
 def test_wait_for_health_retries_connection_reset(monkeypatch) -> None:
