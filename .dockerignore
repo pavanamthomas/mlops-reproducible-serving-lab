@@ -15,9 +15,6 @@ notebooks
 .ruff_cache
 .coverage
 htmlcov
-.cursor
-.claude
-.codex
 .idea
 .vscode
 docs
